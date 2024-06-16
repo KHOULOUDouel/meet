@@ -110,3 +110,14 @@ Then a chart should be displayed showing the number of upcoming events in each c
 Meet App is designed to help users find and keep track of upcoming events in various cities. The app offers features such as filtering events by city, showing/hiding event details, specifying the number of events displayed, offline access, adding the app to the home screen, and visualizing event details with charts.
 
 The app is built using React and leverages the create-react-app (CRA) tool for efficient project setup and management. The app also supports Progressive Web App (PWA) capabilities, allowing users to install it on their devices for a native app-like experience.
+
+Using Serverless Functions in Meet App
+In the Meet app, we leverage serverless functions to handle various backend tasks efficiently. Serverless functions, deployed on AWS Lambda, allow us to execute code in response to specific events such as HTTP requests via API Gateway. This approach offers several benefits, including scalability, reduced server management overhead, and cost-effectiveness as we only pay for the compute time we use.
+
+Key Use Cases for Serverless Functions:
+Event Handling: Serverless functions will be used to process and respond to user interactions and other application events in real-time.
+Data Processing: Functions can be triggered to perform data processing tasks, such as parsing and transforming data received from the frontend.
+Third-Party Integrations: We can use serverless functions to securely interact with third-party APIs, ensuring that our app remains modular and easy to maintain.
+Authentication and Authorization: By utilizing serverless functions, we can manage user authentication and authorization, ensuring secure access to the app's features.
+By using the Serverless Framework, we can easily deploy and manage these functions, ensuring that our app remains responsive and scalable.
+
