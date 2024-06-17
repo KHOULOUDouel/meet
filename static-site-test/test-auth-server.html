@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Test Auth Server</title>
+  </head>
+
+  <body>
+    <style>
+      #container {
+        max-width: 500px;
+      }
+      h4 {
+        margin-top: 25px;
+      }
+    </style>
+
+    <main id="container">
+      <h1>OAuth2 Test</h1>
+
+      <h4><b>Step 1:</b> Get OAuth URL</h4>
+      <p>Click the button below to get your OAuth URL.</p>
+      <button id="getAuthUrlButton">Get OAuth URL</button>
+      <p id="result"></p>
+      <a id="authURL" href target="_blank">Click to authorize</a>
+
+      <!-- Step 2: Get Access Token -->
+      <h4><b>Step 2:</b> Get Access Token</h4>
+      <p>Click the button below to get your access token.</p>
+      <button id="getAccessToken">Get Access Token</button>
+      <p id="accessToken"></p>
+
+      <!-- Step 3: Get Calendar Events -->
+      <h4><b>Step 3:</b> Get Calendar Events</h4>
+      <p>Click the button below to get your calendar events using the access token.</p>
+      <button id="getEvents">Get Events</button>
+      <p id="events"></p>
+    </main>
+
+    <script type="text/javascript">
+      // Step 1: Get OAuth URL
+      const getAuthUrlButton = document.getElementById("getAuthUrlButton");
+      const resultElement = document.getElementById("result");
+      const resultLink = document.getElementById("authURL");
+      const getAuthURL = "https://hgxov6uq29.execute-api.us-east-1.amazonaws.com/dev/api/get-auth-url"; 
+
+      getAuthUrlButton.onclick = function () {
+        fetch(getAuthURL)
+          .then(function (response) {
+            return response.json();
+          })
+          .then(function (json) {
+            const result = JSON.stringify(json);
+            const { authUrl } = JSON.parse(result);
+            resultElement.innerText = result;
+            resultLink.href = authUrl;
+          });
+      };
+
+      // Step 2: Get Access Token
+      const getAccessTokenButton = document.getElementById("getAccessToken");
+      const accessTokenElement = document.getElementById("accessToken");
+      const getAccessTokenUrl = "https://hgxov6uq29.execute-api.us-east-1.amazonaws.com/dev/api/get-access-token"; 
+
+      getAccessTokenButton.onclick = function () {
+        fetch(getAccessTokenUrl)
+          .then(function (response) {
+            return response.json();
+          })
+          .then(function (json) {
+            accessTokenElement.innerText = JSON.stringify(json, null, 2);
+          });
+      };
+
+      // Step 3: Get Calendar Events
+      const getEvents = document.getElementById("getEvents");
+      const events = document.getElementById("events");
+      const getCalendarEvents = "https://hgxov6uq29.execute-api.us-east-1.amazonaws.com/dev/api/get-events"; // Replace this with your actual endpoint
+
+      getEvents.onclick = function () {
+        const { access_token } = JSON.parse(accessTokenElement.innerText);
+        const eventRequest = getCalendarEvents + "/" + access_token;
+        fetch(eventRequest)
+          .then(function (response) {
+            return response.json();
+          })
+          .then(function (json) {
+            events.innerText = JSON.stringify(json, null, 2);
+          });
+      };
+    </script>
+  </body>
+</html>
