@@ -2,11 +2,9 @@
 
 const { google } = require("googleapis");
 const calendar = google.calendar("v3");
-const SCOPES = ["https://www.googleapis.com/auth/calendar.events.readonly"];
+const SCOPES = ["https://www.googleapis.com/auth/calendar.events.public.readonly"];
 const { CLIENT_SECRET, CLIENT_ID, CALENDAR_ID } = process.env;
-const redirect_uris = [
-  "https://KHOULOUDouel.github.io/meet/"  // Make sure this matches the URI configured in Google Cloud
-];
+const redirect_uris = ["https://khouloudouel.github.io/meet/"];
 
 const oAuth2Client = new google.auth.OAuth2(
   CLIENT_ID,
@@ -26,20 +24,19 @@ module.exports.getAuthURL = async () => {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,
     },
-    body: JSON.stringify({
-      authUrl,
-    }),
+    body: JSON.stringify({ authUrl }),
   };
 };
 
 module.exports.getAccessToken = async (event) => {
-  const code = decodeURIComponent(event.pathParameters.code);
+  const code = decodeURIComponent(`${event.pathParameters.code}`);
 
   return new Promise((resolve, reject) => {
     oAuth2Client.getToken(code, (error, response) => {
       if (error) {
         return reject(error);
       }
+      console.log("Generated Access Token:", response);
       return resolve(response);
     });
   })
@@ -66,7 +63,7 @@ module.exports.getAccessToken = async (event) => {
 };
 
 module.exports.getCalendarEvents = async (event) => {
-  const access_token = decodeURIComponent(event.pathParameters.access_token);
+  const access_token = decodeURIComponent(`${event.pathParameters.access_token}`);
   oAuth2Client.setCredentials({ access_token });
 
   return new Promise((resolve, reject) => {
