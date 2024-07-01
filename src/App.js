@@ -1,4 +1,3 @@
-// src/App.js
 import React, { useState, useEffect } from 'react';
 import CitySearch from './components/CitySearch';
 import EventList from './components/EventList';
@@ -10,19 +9,23 @@ const App = () => {
   const [events, setEvents] = useState([]);
   const [locations, setLocations] = useState([]);
   const [eventCount, setEventCount] = useState(32);
+  const [currentCity, setCurrentCity] = useState('See all cities');
 
   useEffect(() => {
     const fetchEvents = async () => {
       const allEvents = await getEvents();
-      setEvents(allEvents.slice(0, eventCount));
+      const filteredEvents = currentCity === 'See all cities'
+        ? allEvents
+        : allEvents.filter(event => event.location === currentCity);
+      setEvents(filteredEvents.slice(0, eventCount));
       setLocations(extractLocations(allEvents));
     };
     fetchEvents();
-  }, [eventCount]);
+  }, [eventCount, currentCity]);
 
   return (
     <div className="App">
-      <CitySearch locations={locations} setEvents={setEvents} />
+      <CitySearch allLocations={locations} setCurrentCity={setCurrentCity} />
       <NumberOfEvents setEventCount={setEventCount} />
       <EventList events={events} />
     </div>

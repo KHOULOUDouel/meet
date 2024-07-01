@@ -1,7 +1,7 @@
 
 // src/__tests__/App.test.js
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import App from '../App';
 import { getEvents, extractLocations } from '../api';
 import mockData from '../mock-data';
@@ -78,5 +78,50 @@ describe('<App /> component', () => {
 
     const eventItems = await screen.findAllByRole('listitem');
     expect(eventItems.length).toBeGreaterThan(0);
+  });
+
+  test('renders a list of events matching the number specified by the user', async () => {
+    const user = userEvent.setup();
+    const AppComponent = render(<App />);
+    const AppDOM = AppComponent.container.firstChild;
+
+    const numberOfEventsInput = AppDOM.querySelector('.number-of-events input');
+
+    await user.clear(numberOfEventsInput);
+    await user.type(numberOfEventsInput, '1');
+
+    const EventListDOM = AppDOM.querySelector('.event-list');
+    const allRenderedEventItems = within(EventListDOM).queryAllByRole('listitem');
+
+    expect(allRenderedEventItems.length).toBe(1);
+  });
+});
+
+describe('<App /> integration', () => {
+  test('renders a list of events matching the city selected by the user', async () => {
+    const user = userEvent.setup();
+    const AppComponent = render(<App />);
+    const AppDOM = AppComponent.container.firstChild;
+
+    const CitySearchDOM = AppDOM.querySelector('#city-search');
+    const CitySearchInput = within(CitySearchDOM).queryByRole('textbox');
+
+    await user.type(CitySearchInput, "Berlin");
+    const berlinSuggestionItem = within(CitySearchDOM).queryByText('Berlin, Germany');
+    await user.click(berlinSuggestionItem);
+
+    const EventListDOM = AppDOM.querySelector('.event-list');
+    const allRenderedEventItems = within(EventListDOM).queryAllByRole('listitem');
+
+    const allEvents = await getEvents();
+    const berlinEvents = allEvents.filter(
+      event => event.location === 'Berlin, Germany'
+    );
+
+    expect(allRenderedEventItems.length).toBe(berlinEvents.length);
+    
+    allRenderedEventItems.forEach(event => {
+      expect(event.textContent).toContain("Berlin, Germany");
+    });
   });
 });
