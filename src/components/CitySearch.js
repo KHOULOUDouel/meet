@@ -4,18 +4,20 @@ import React, { useState, useEffect } from 'react';
 const CitySearch = ({ allLocations, setCurrentCity }) => {
   const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState(allLocations);
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
   useEffect(() => {
     setSuggestions(allLocations);
-  }, [`${allLocations}`]);
+  }, [allLocations]);
 
   const handleInputChanged = (event) => {
     const value = event.target.value;
     setQuery(value);
-    const filteredSuggestions = allLocations.filter(location => {
-      return location.toLowerCase().includes(value.toLowerCase());
-    });
+    const filteredSuggestions = allLocations.filter(location => 
+      location.toLowerCase().includes(value.toLowerCase())
+    );
     setSuggestions(filteredSuggestions);
+    setShowSuggestions(true);
   };
 
   const handleItemClicked = (event) => {
@@ -32,9 +34,10 @@ const CitySearch = ({ allLocations, setCurrentCity }) => {
         className="city"
         value={query}
         onChange={handleInputChanged}
+        onFocus={() => setShowSuggestions(true)}
         placeholder="Search for a city"
       />
-      <ul className="suggestions">
+      <ul className="suggestions" style={{ display: showSuggestions ? 'block' : 'none' }}>
         {suggestions.map((suggestion) => (
           <li onClick={handleItemClicked} key={suggestion}>{suggestion}</li>
         ))}
