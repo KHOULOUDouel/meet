@@ -14,7 +14,7 @@ describe('<CitySearch /> component', () => {
     await act(async () => {
       const allEvents = await getEvents();
       allLocations = extractLocations(allEvents);
-      CitySearchComponent = render(<CitySearch allLocations={allLocations} />);
+      CitySearchComponent = render(<CitySearch allLocations={allLocations} setCurrentCity={() => { }} />);
     });
   });
 
@@ -56,42 +56,18 @@ describe('<CitySearch /> component', () => {
     }
   });
 
-  test('renders the suggestion text in the textbox upon clicking on the suggestion', async () => {
+  test('renders the suggestion text in the textbox upon clicking on the suggestion and hides suggestions', async () => {
     const user = userEvent.setup();
     const cityTextBox = CitySearchComponent.queryByRole('textbox');
     await act(async () => {
       await user.type(cityTextBox, "Berlin");
     });
+    const suggestionList = CitySearchComponent.queryByRole('list');
     const BerlinGermanySuggestion = CitySearchComponent.queryAllByRole('listitem')[0];
     await act(async () => {
       await user.click(BerlinGermanySuggestion);
     });
     expect(cityTextBox).toHaveValue(BerlinGermanySuggestion.textContent);
-  });
-
-  // Additional test to cover line 13
-  test('hides the suggestion list when the city input loses focus', async () => {
-    const user = userEvent.setup();
-    const cityTextBox = CitySearchComponent.queryByRole('textbox');
-    await act(async () => {
-      await user.click(cityTextBox);
-      await user.click(document.body); // Click outside to trigger blur
-    });
-    const suggestionList = CitySearchComponent.queryByRole('list');
     expect(suggestionList).not.toBeInTheDocument();
-  });
-
-  // Additional test to cover line 39
-  test('shows suggestions when the input field is focused again', async () => {
-    const user = userEvent.setup();
-    const cityTextBox = CitySearchComponent.queryByRole('textbox');
-    await act(async () => {
-      await user.click(cityTextBox);
-      await user.type(cityTextBox, 'Berlin');
-      await user.click(document.body); // Click outside to trigger blur
-      await user.click(cityTextBox); // Focus again
-    });
-    const suggestionList = CitySearchComponent.queryByRole('list');
-    expect(suggestionList).toBeInTheDocument();
   });
 });

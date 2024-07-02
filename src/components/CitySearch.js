@@ -13,11 +13,11 @@ const CitySearch = ({ allLocations, setCurrentCity }) => {
   const handleInputChanged = (event) => {
     const value = event.target.value;
     setQuery(value);
-    const filteredSuggestions = allLocations.filter(location => 
+    const filteredSuggestions = allLocations.filter(location =>
       location.toLowerCase().includes(value.toLowerCase())
     );
+    setQuery(value);
     setSuggestions(filteredSuggestions);
-    setShowSuggestions(true);
   };
 
   const handleItemClicked = (event) => {
@@ -37,14 +37,17 @@ const CitySearch = ({ allLocations, setCurrentCity }) => {
         onFocus={() => setShowSuggestions(true)}
         placeholder="Search for a city"
       />
-      <ul className="suggestions" style={{ display: showSuggestions ? 'block' : 'none' }}>
-        {suggestions.map((suggestion) => (
-          <li onClick={handleItemClicked} key={suggestion}>{suggestion}</li>
-        ))}
-        <li key='See all cities' onClick={handleItemClicked}>
-          <b>See all cities</b>
-        </li>
-      </ul>
+      {showSuggestions ?
+        <ul className="suggestions">
+          {suggestions.map((suggestion) => {
+            return <li key={suggestion} onClick={handleItemClicked}>{suggestion}</li>
+          })}
+          <li key='See all cities' onClick={handleItemClicked}>
+            <b>See all cities</b>
+          </li>
+        </ul>
+        : null
+      }
     </div>
   );
 };

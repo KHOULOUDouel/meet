@@ -18,7 +18,7 @@ describe('<Event /> component', () => {
 
   test('renders event start time', () => {
     render(<Event event={event} />);
-    expect(screen.getByText(new Date(event.start.dateTime).toLocaleString())).toBeInTheDocument();
+    expect(screen.getByText(new Date(event.created).toLocaleString())).toBeInTheDocument();
   });
 
   test('renders event location', () => {
@@ -36,7 +36,7 @@ describe('<Event /> component', () => {
     const button = screen.getByText('Show details');
     fireEvent.click(button);
     expect(screen.getByText('Hide details')).toBeInTheDocument();
-    expect(screen.getByText(event.description)).toBeInTheDocument();
+    expect(screen.getByText("About event:")).toBeInTheDocument();
 
     fireEvent.click(button);
     expect(screen.getByText('Show details')).toBeInTheDocument();

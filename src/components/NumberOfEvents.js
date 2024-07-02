@@ -12,7 +12,7 @@ const NumberOfEvents = ({ setEventCount }) => {
   };
 
   return (
-    <div className="number-of-events">
+    <div id="number-of-events">
       <label htmlFor="event-count">Number of Events:</label>
       <input
         id="event-count"

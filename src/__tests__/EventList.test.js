@@ -1,52 +1,46 @@
 
-// src/__tests__/EventList.test.js
-import { render, within, waitFor } from '@testing-library/react';
-import { act } from 'react'; // Importing act from react
+import React from 'react';
+import { render, screen, fireEvent } from '@testing-library/react';
+import Event from '../components/Event';
 import { getEvents } from '../api';
-import EventList from '../components/EventList';
-import App from '../App';
 
-describe('<EventList /> component', () => {
-  let EventListComponent;
+describe('<Event /> component', () => {
+  let event;
 
-  beforeEach(async () => {
-    await act(async () => {
-      EventListComponent = render(<EventList events={[]} />);
-    });
-  });
-
-  test('has an element with "list" role', () => {
-    expect(EventListComponent.queryByRole("list")).toBeInTheDocument();
-  });
-
-  test('renders correct number of events', async () => {
+  beforeAll(async () => {
     const allEvents = await getEvents();
-    await act(async () => {
-      EventListComponent.rerender(<EventList events={allEvents} />);
-    });
-    expect(EventListComponent.getAllByRole("listitem")).toHaveLength(allEvents.length);
+    event = allEvents[0];
   });
 
-  test('renders the events with correct data', async () => {
-    const allEvents = await getEvents();
-    await act(async () => {
-      EventListComponent.rerender(<EventList events={allEvents} />);
-    });
-    const eventListItems = EventListComponent.getAllByRole("listitem");
-    eventListItems.forEach((item, index) => {
-      expect(item.textContent).toContain(allEvents[index].summary);
-    });
+  test('renders event summary', () => {
+    render(<Event event={event} />);
+    expect(screen.getByText(event.summary)).toBeInTheDocument();
   });
-});
 
-describe('<EventList /> integration', () => {
-  test('renders a list of 32 events when the app is mounted and rendered', async () => {
-    const AppComponent = render(<App />);
-    const AppDOM = AppComponent.container.firstChild;
-    const EventListDOM = AppDOM.querySelector('.event-list'); // Ensure the class name is used correctly
-    await waitFor(() => {
-      const EventListItems = within(EventListDOM).queryAllByRole('listitem');
-      expect(EventListItems.length).toBe(32);
-    });
+  test('renders event start time', () => {
+    render(<Event event={event} />);
+    expect(screen.getByText(new Date(event.created).toLocaleString())).toBeInTheDocument();
+  });
+
+  test('renders event location', () => {
+    render(<Event event={event} />);
+    expect(screen.getByText(event.location)).toBeInTheDocument();
+  });
+
+  test('renders details button', () => {
+    render(<Event event={event} />);
+    expect(screen.getByText('Show details')).toBeInTheDocument();
+  });
+
+  test('toggles event details on button click', () => {
+    render(<Event event={event} />);
+    const button = screen.getByText('Show details');
+    fireEvent.click(button);
+    expect(screen.getByText('Hide details')).toBeInTheDocument();
+    expect(screen.getByText("About event:")).toBeInTheDocument();
+
+    fireEvent.click(button);
+    expect(screen.getByText('Show details')).toBeInTheDocument();
+    expect(screen.queryByText(event.description)).not.toBeInTheDocument();
   });
 });

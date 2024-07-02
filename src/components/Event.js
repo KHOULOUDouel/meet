@@ -1,5 +1,4 @@
 // src/components/Event.js
-
 import React, { useState } from 'react';
 
 const Event = ({ event }) => {
@@ -12,7 +11,7 @@ const Event = ({ event }) => {
   return (
     <div className="event">
       <h2>{event.summary}</h2>
-      <p>{new Date(event.start.dateTime).toLocaleString()}</p>
+      <p>{new Date(event.created).toLocaleString()}</p>
       <p>{event.location}</p>
       <button onClick={handleShowDetails}>
         {showDetails ? 'Hide details' : 'Show details'}
