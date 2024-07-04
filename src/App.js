@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Component } from 'react';
 import CitySearch from './components/CitySearch';
 import EventList from './components/EventList';
 import NumberOfEvents from './components/NumberOfEvents';
 import { getEvents, extractLocations } from './api';
 import './App.css';
+import { InfoAlert, WarningAlert, ErrorAlert } from './AlertComponents';
 
+// Functional component for the main application
 const App = () => {
   const [events, setEvents] = useState([]);
   const [locations, setLocations] = useState([]);
@@ -28,6 +30,9 @@ const App = () => {
       <CitySearch allLocations={locations} setCurrentCity={setCurrentCity} />
       <NumberOfEvents setEventCount={setEventCount} />
       <EventList events={events} />
+      <InfoAlert text="This is an info alert!" />
+      <WarningAlert text="This is a warning alert!" />
+      <ErrorAlert text="This is an error alert!" />
     </div>
   );
 };
