@@ -1,12 +1,12 @@
-import React, { useState, useEffect, Component } from 'react';
+// src/App.js
+import React, { useState, useEffect } from 'react';
 import CitySearch from './components/CitySearch';
 import EventList from './components/EventList';
 import NumberOfEvents from './components/NumberOfEvents';
 import { getEvents, extractLocations } from './api';
 import './App.css';
-import { InfoAlert, WarningAlert, ErrorAlert } from './AlertComponents';
+import { InfoAlert, WarningAlert, ErrorAlert } from './components/Alert'; // Corrected import path
 
-// Functional component for the main application
 const App = () => {
   const [events, setEvents] = useState([]);
   const [locations, setLocations] = useState([]);
