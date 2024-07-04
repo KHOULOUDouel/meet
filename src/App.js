@@ -38,7 +38,7 @@ const App = () => {
         {errorAlert && <ErrorAlert text={errorAlert} />}
       </div>
       <CitySearch allLocations={locations} setCurrentCity={setCurrentCity} setInfoAlert={setInfoAlert} />
-      <NumberOfEvents setEventCount={setEventCount} />
+      <NumberOfEvents setEventCount={setEventCount} setErrorAlert={setErrorAlert} />
       <EventList events={events} />
     </div>
   );

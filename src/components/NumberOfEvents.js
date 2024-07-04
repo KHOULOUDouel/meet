@@ -2,13 +2,19 @@
 
 import React, { useState } from 'react';
 
-const NumberOfEvents = ({ setEventCount }) => {
+const NumberOfEvents = ({ setEventCount, setErrorAlert }) => {
   const [eventCount, setLocalEventCount] = useState(32);
 
   const handleInputChanged = (event) => {
     const value = event.target.value;
-    setLocalEventCount(value);
-    setEventCount(value);
+    if (isNaN(value) || value <= 0) {
+      setErrorAlert("Please enter a valid number of events.");
+      setLocalEventCount(value);
+    } else {
+      setErrorAlert("");
+      setLocalEventCount(value);
+      setEventCount(value);
+    }
   };
 
   return (
@@ -25,3 +31,7 @@ const NumberOfEvents = ({ setEventCount }) => {
 };
 
 export default NumberOfEvents;
+
+
+
+
