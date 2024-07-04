@@ -1,6 +1,4 @@
-// src/__tests__/CitySearch.test.js
-
-
+/// src/__tests__/CitySearch.test.js
 import { render, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import CitySearch from '../components/CitySearch';
@@ -14,7 +12,13 @@ describe('<CitySearch /> component', () => {
     await act(async () => {
       const allEvents = await getEvents();
       allLocations = extractLocations(allEvents);
-      CitySearchComponent = render(<CitySearch allLocations={allLocations} setCurrentCity={() => { }} />);
+      CitySearchComponent = render(
+        <CitySearch 
+          allLocations={allLocations} 
+          setCurrentCity={() => { }} 
+          setInfoAlert={() => { }} // Add dummy function for setInfoAlert
+        />
+      );
     });
   });
 
