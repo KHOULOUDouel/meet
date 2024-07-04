@@ -13,6 +13,7 @@ const App = () => {
   const [eventCount, setEventCount] = useState(32);
   const [currentCity, setCurrentCity] = useState('See all cities');
   const [infoAlert, setInfoAlert] = useState(""); // State for InfoAlert text
+  const [errorAlert, setErrorAlert] = useState(""); // State for ErrorAlert text
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -29,7 +30,8 @@ const App = () => {
   return (
     <div className="App">
       <div className="alerts-container">
-        {infoAlert && <InfoAlert text={infoAlert} />} {/* Conditionally render InfoAlert */}
+        {infoAlert && <InfoAlert text={infoAlert} />}
+        {errorAlert && <ErrorAlert text={errorAlert} />}
       </div>
       <CitySearch allLocations={locations} setCurrentCity={setCurrentCity} setInfoAlert={setInfoAlert} />
       <NumberOfEvents setEventCount={setEventCount} />
