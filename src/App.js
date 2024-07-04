@@ -5,7 +5,7 @@ import EventList from './components/EventList';
 import NumberOfEvents from './components/NumberOfEvents';
 import { getEvents, extractLocations } from './api';
 import './App.css';
-import { InfoAlert, WarningAlert, ErrorAlert } from './components/Alert';
+import { InfoAlert, ErrorAlert } from './components/Alert';
 
 const App = () => {
   const [events, setEvents] = useState([]);
@@ -17,12 +17,16 @@ const App = () => {
 
   useEffect(() => {
     const fetchEvents = async () => {
-      const allEvents = await getEvents();
-      const filteredEvents = currentCity === 'See all cities'
-        ? allEvents
-        : allEvents.filter(event => event.location === currentCity);
-      setEvents(filteredEvents.slice(0, eventCount));
-      setLocations(extractLocations(allEvents));
+      try {
+        const allEvents = await getEvents();
+        const filteredEvents = currentCity === 'See all cities'
+          ? allEvents
+          : allEvents.filter(event => event.location === currentCity);
+        setEvents(filteredEvents.slice(0, eventCount));
+        setLocations(extractLocations(allEvents));
+      } catch (error) {
+        setErrorAlert("Failed to fetch events. Please try again later.");
+      }
     };
     fetchEvents();
   }, [eventCount, currentCity]);
