@@ -28,6 +28,7 @@ const App = () => {
         setErrorAlert("Failed to fetch events. Please try again later.");
       }
     };
+
     fetchEvents();
   }, [eventCount, currentCity]);
 

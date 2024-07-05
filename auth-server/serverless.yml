@@ -18,8 +18,6 @@ functions:
           path: api/get-auth-url
           method: get
           cors: true
-    layers:
-      - { Ref: NodeModulesLambdaLayer }
 
   getAccessToken:
     handler: handler.getAccessToken
@@ -28,8 +26,6 @@ functions:
           path: api/get-access-token/{code}
           method: get
           cors: true
-    layers:
-      - { Ref: NodeModulesLambdaLayer }
 
   getCalendarEvents:
     handler: handler.getCalendarEvents
@@ -38,9 +34,3 @@ functions:
           path: api/get-events/{access_token}
           method: get
           cors: true
-    layers:
-      - { Ref: NodeModulesLambdaLayer }
-
-layers:
-  nodeModules:
-    path: lambda-layer
