@@ -94,3 +94,18 @@ input[type="number"] {
   width: 250px;
   z-index: 1000;
 }
+
+/* Other existing styles */
+
+/* New styles for charts-container */
+.charts-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px; /* Optional: adds space between the charts */
+}
+
+@media (max-width: 768px) {
+  .charts-container {
+    grid-template-columns: 1fr;
+  }
+}
