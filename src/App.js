@@ -6,6 +6,7 @@ import NumberOfEvents from './components/NumberOfEvents';
 import { getEvents, extractLocations } from './api';
 import './App.css';
 import { InfoAlert, WarningAlert, ErrorAlert } from './components/Alert';
+import CityEventsChart from './components/CityEventsChart';
 
 const App = () => {
   const [events, setEvents] = useState([]);
@@ -48,6 +49,7 @@ const App = () => {
       </div>
       <CitySearch allLocations={locations} setCurrentCity={setCurrentCity} setInfoAlert={setInfoAlert} />
       <NumberOfEvents setEventCount={setEventCount} setErrorAlert={setErrorAlert} />
+      <CityEventsChart allLocations={locations} events={events} />
       <EventList events={events} />
     </div>
   );
